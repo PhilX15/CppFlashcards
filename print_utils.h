@@ -10,7 +10,7 @@
 #define OFFSET_Y 1
 
 void clear_scr();
-void print_frame(char *text);
+void print_frame(const char *text);
 void format_text(char *text, size_t max_line_length);
 
 char **tokenize(char *text, size_t count);

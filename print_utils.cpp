@@ -1,14 +1,20 @@
 #include "print_utils.h"
 
 void clear_scr() {
-    system("CLS");
+    system("clear");
 }
 
-void print_frame(char *text) {
-    format_text(text, LINE_LENGTH);
-    unsigned int width = get_max_line_length(text) + 2 * OFFSET_X + 2;
-    unsigned int height = get_lines(text) + 2 * OFFSET_Y + 2;
-    char **lines = tokenize(text, height - 2 * OFFSET_Y - 2);
+void print_frame(const char *text) {
+    char *text_copy = strdup(text);
+    if (text_copy == NULL) {
+        return;
+    }
+    format_text(text_copy, LINE_LENGTH);
+    unsigned int width = get_max_line_length(text_copy) + 2 * OFFSET_X + 2;
+    unsigned int height = get_lines(text_copy) + 2 * OFFSET_Y + 2;
+    char **lines = tokenize(text_copy, height - 2 * OFFSET_Y - 2);
+
+    free(text_copy);
 
     size_t current_line = 0;
     for (int i = 0; i < height; i++) {
@@ -30,6 +36,11 @@ void print_frame(char *text) {
         }
         printf("\n");
     }
+
+    for (int i = 0; i < height - 2 * OFFSET_Y - 2; i++) {
+        free(*(lines + i));
+    }
+    free(lines);
 }
 
 void format_text(char *text, size_t max_line_length) {
