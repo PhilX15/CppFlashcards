@@ -17,8 +17,8 @@ void print_frame(const char *text) {
     free(text_copy);
 
     size_t current_line = 0;
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
+    for (size_t i = 0; i < height; i++) {
+        for (size_t j = 0; j < width; j++) {
             if ((i == 0 && j == 0) || (i == height - 1 && j == 0) || (i == 0 && j == width - 1) || (i == height - 1 && j == width - 1)) {
                 printf("+");
             } else if (i == 0 || i == height - 1) {
@@ -37,7 +37,7 @@ void print_frame(const char *text) {
         printf("\n");
     }
 
-    for (int i = 0; i < height - 2 * OFFSET_Y - 2; i++) {
+    for (size_t i = 0; i < height - 2 * OFFSET_Y - 2; i++) {
         free(*(lines + i));
     }
     free(lines);
@@ -69,7 +69,7 @@ char **tokenize(char *text, size_t count) {
     while (token != NULL) {
         *(lines + counter) = strdup(token);
         if (*(lines + counter) == NULL) {
-            for (int i = 0; i < counter; i++) {
+            for (size_t i = 0; i < counter; i++) {
                 free(*(lines + i));
             }
             free(lines);
