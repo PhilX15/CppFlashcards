@@ -1,4 +1,8 @@
+#ifndef DOUBLY_LINKED_LIST_H
+#define DOUBLY_LINKED_LIST_H
+
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -38,34 +42,55 @@ public:
         }
     }
 
-    void push_back(T value) {
-        Node<T> *maybe_node = find(value);
-        if (maybe_node != nullptr) {
-            maybe_node->data.add_translation(value.translated_words[0]);
-            return;
+    List(const List& other) : head(nullptr), tail(nullptr) {
+        Node<T>* current = other.head;
+        while (current != nullptr) {
+            push_back(current->data);
+            current = current->next;
+        }
+    }
+
+    List& operator=(const List& other) {
+        if (this == &other) {
+            return *this;
         }
 
+        while (!is_empty()) {
+            pop_front();
+        }
+
+        Node<T>* current = other.head;
+        while (current != nullptr) {
+            push_back(current->data);
+            current = current->next;
+        }
+
+        return *this;
+    }
+
+
+    void push_back(T value) {
         Node<T> *new_node = new Node<T>(value);
         new_node->prev = tail;
+        new_node->next = nullptr;
         if (tail != nullptr) {
             tail->next = new_node;
-            tail = new_node;
         } else {
-            tail = new_node;
             head = new_node;
         }
+        tail = new_node;
     }
 
     void push_front(T value) {
         Node<T> *new_node = new Node<T>(value);
         new_node->next = head;
+        new_node->prev = nullptr;
         if (head != nullptr) {
             head->prev = new_node;
-            head = new_node;
         } else {
             tail = new_node;
-            head = new_node;
         }
+        head = new_node;
     }
 
     T pop_back() {
@@ -237,3 +262,5 @@ public:
         return os;
     }
 };
+
+#endif
