@@ -1,3 +1,6 @@
+#ifndef FLASHCARD_H
+#define FLASHCARD_H
+
 #include <string>
 #include <ostream>
 #include <vector>
@@ -23,18 +26,18 @@ public:
     vector<string> translated_words;
     flag_t flag;
 
-    Flashcard(string original, string translated) : original_word(original), flag(NOT_TRAINED) {
+    Flashcard(const string& original, const string& translated) : original_word(original), flag(NOT_TRAINED) {
         translated_words.push_back(translated);
     }
 
-    void display(enum word_type_t word_type) const {
+    void display(word_type_t word_type) const {
         switch (word_type) {
             case ORIGINAL:
                 print_frame(original_word.c_str());
                 break;
             case TRANSLATED:
                 string translations;
-                for (int i = 0; i < translated_words.size(); i++) {
+                for (size_t i = 0; i < translated_words.size(); i++) {
                     translations.append(translated_words[i]);
                     if (i != translated_words.size() - 1) {
                         translations.append(" / ");
@@ -49,7 +52,9 @@ public:
         translated_words.push_back(translation);
     }
 
-    bool operator==(Flashcard& fc) {
+    bool operator==(const Flashcard& fc) const {
         return (original_word == fc.original_word);
     }
 };
+
+#endif

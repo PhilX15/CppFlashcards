@@ -1,7 +1,11 @@
+#ifndef SESSION_H
+#define SESSION_H
+
 #include <queue>
 #include <algorithm>
 #include "flashcard.h"
 #include "doubly_linked_list.h"
+#include "file_handler.h"
 
 using namespace std;
 
@@ -14,7 +18,7 @@ private:
     unsigned int missed;
 
     void draw_words() {
-        for (int i = 0; i < total_words && !flashcards.is_empty(); i++) {
+        for (size_t i = 0; i < total_words && !flashcards.is_empty(); i++) {
             int random = rand() % flashcards.size();
             Flashcard flashcard = flashcards.pop(random);
             flashcard_queue.push(flashcard);
@@ -35,14 +39,17 @@ private:
     }
 public:
     Session() : total_words(5), guessed(0), missed(0) {
-        flashcards.push_back(Flashcard("mleko", "milk"));
-        flashcards.push_back(Flashcard("dom", "house"));
-        flashcards.push_back(Flashcard("pies", "dog"));
-        flashcards.push_back(Flashcard("kot", "cat"));
-        flashcards.push_back(Flashcard("mama", "mum"));
-        flashcards.push_back(Flashcard("kicia", "pussy"));
-        flashcards.push_back(Flashcard("mama", "mother"));
-        flashcards.push_back(Flashcard("dom", "home"));
+        ifstream file("words.txt");
+        if (!file.is_open()) {
+            cerr << "Could not open file" << endl;
+            return;
+        }
+        auto maybe_flashcards = file_read(file);
+        if (!maybe_flashcards) {
+            cerr << "Failed to read file" << endl;
+        } else {
+            flashcards = *maybe_flashcards;
+        }
     }
 
     void guessing() {
@@ -90,3 +97,5 @@ public:
         cout << "TOTAL WORDS: " << total_words << "\nGUESSED (IN THE FIRST ATTEMPT): " << guessed << "\nMISSED: " << missed << endl;
     }
 };
+
+#endif

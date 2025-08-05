@@ -1,4 +1,4 @@
-#include "file_reader.h"
+#include "file_handler.h"
 
 optional<List<Flashcard>> file_read(ifstream &file) {
     if (!file.is_open()) {
@@ -9,7 +9,6 @@ optional<List<Flashcard>> file_read(ifstream &file) {
 
     string line;
     while (getline(file, line)) {
-        cout << "Reading line: " << line << endl;
         std::stringstream line_stream(line);
         string original;
         if (!getline(line_stream, original, ' ')) {
@@ -20,7 +19,6 @@ optional<List<Flashcard>> file_read(ifstream &file) {
         string translation;
         while (getline(line_stream, translation, ',')) {
             translation_counter++;
-            cout << "Pushing: " << translation << endl;
             add_flashcard_to_list(flashcards, Flashcard(original, translation));
         }
 

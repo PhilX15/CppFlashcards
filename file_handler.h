@@ -1,5 +1,5 @@
-#ifndef FILE_READER_H
-#define FILE_READER_H
+#ifndef FILE_HANDLER_H
+#define FILE_HANDLER_H
 
 #include <fstream>
 #include <iostream>
@@ -10,7 +10,13 @@
 
 using namespace std;
 
+/*
+FILE FORMAT: <original_word> <translations> [<learning status>]
+*/
+
 optional<List<Flashcard>> file_read(ifstream &file);
+void file_write(ifstream &file, const List<Flashcard>& list);
+
 void add_flashcard_to_list(List<Flashcard>& list, const Flashcard& new_flashcard);
 
 #endif
