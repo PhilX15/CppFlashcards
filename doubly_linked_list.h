@@ -32,6 +32,28 @@ private:
     Node<T> *tail;
 
 public:
+    class Iterator {
+        private:
+            Node<T> *current;
+        public:
+            Iterator(Node<T>* node) : current(node) {}
+
+            T& operator*() const {
+                return current->data;
+            }
+
+            Iterator& operator++() {
+                if (current) {
+                    current = current->next;
+                }
+                return *this;
+            }
+
+            bool operator!=(const Iterator& other) {
+                return current != other.current;
+            }
+    };
+
     List() : head(nullptr), tail(nullptr) {}
 
     ~List() {
@@ -246,6 +268,14 @@ public:
 
     bool is_empty() const {
         return (head == nullptr && tail == nullptr);
+    }
+
+    Iterator begin() const {
+        return Iterator(head);
+    }
+
+    Iterator end() const { 
+        return Iterator(nullptr); 
     }
 };
 

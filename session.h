@@ -6,6 +6,7 @@
 #include "flashcard.h"
 #include "doubly_linked_list.h"
 #include "file_handler.h"
+#include "input_utils.h"
 
 using namespace std;
 
@@ -18,9 +19,10 @@ private:
     unsigned int missed;
 
     void draw_words() {
-        for (size_t i = 0; i < total_words && !flashcards.is_empty(); i++) {
-            int random = rand() % flashcards.size();
-            Flashcard flashcard = flashcards.pop(random);
+        List<Flashcard> flashcards_copy = flashcards;
+        for (size_t i = 0; i < total_words && !flashcards_copy.is_empty(); i++) {
+            int random = rand() % flashcards_copy.size();
+            Flashcard flashcard = flashcards_copy.pop(random);
             flashcard_queue.push(flashcard);
         }
     }
@@ -32,25 +34,8 @@ private:
 
         return translation;
     }
-
-    void wait_for_input() {
-        cout << "Press ENTER to continue...";
-        getchar();
-    }
 public:
-    Session() : total_words(5), guessed(0), missed(0) {
-        ifstream file("words.txt");
-        if (!file.is_open()) {
-            cerr << "Could not open file" << endl;
-            return;
-        }
-        auto maybe_flashcards = file_read(file);
-        if (!maybe_flashcards) {
-            cerr << "Failed to read file" << endl;
-        } else {
-            flashcards = *maybe_flashcards;
-        }
-    }
+    Session() : total_words(0), guessed(0), missed(0) {}
 
     void guessing() {
         draw_words();
@@ -91,6 +76,15 @@ public:
         clear_scr();
         display_stats();
         wait_for_input();
+    }
+
+    void set_flashcards(List<Flashcard> flashcards) {
+        this->flashcards = flashcards;
+        total_words = flashcards.size();
+    }
+
+    bool has_flashcards() {
+        return !flashcards.is_empty();
     }
 
     void display_stats() {

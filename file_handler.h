@@ -11,7 +11,7 @@
 using namespace std;
 
 /*
-FILE FORMAT: <original_word> <translations> [<learning status>]
+FILE FORMAT: <original_word> <translations>
 */
 
 optional<List<Flashcard>> file_read(ifstream &file);

@@ -55,6 +55,15 @@ public:
     bool operator==(const Flashcard& fc) const {
         return (original_word == fc.original_word);
     }
+
+    friend ostream& operator<<(ostream& os, const Flashcard& flashcard) {
+        os << flashcard.original_word << " - "; 
+        for (size_t i = 0; i < flashcard.translated_words.size(); i++) {
+            os << flashcard.translated_words[i] << ((i == flashcard.translated_words.size() - 1) ? "" : ", ");
+        }
+        os << endl;
+        return os;
+    }
 };
 
 #endif
