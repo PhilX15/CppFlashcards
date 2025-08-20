@@ -247,20 +247,6 @@ public:
     bool is_empty() const {
         return (head == nullptr && tail == nullptr);
     }
-
-    friend ostream& operator<<(ostream& os, const List& list) {
-        if (list.is_empty()) {
-            cout << "List is empty";
-            return os;
-        }
-
-        Node<T> *current_node = list.head;
-        while (current_node != nullptr) {
-            cout << *current_node << " ";
-            current_node = current_node->next;
-        }
-        return os;
-    }
 };
 
 #endif
