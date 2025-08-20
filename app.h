@@ -18,8 +18,6 @@ private:
     Session session;
 public:
     void run() {
-        load_words();
-
         Menu menu;
 
         while (true) {
@@ -29,6 +27,8 @@ public:
             option_t option = menu.get_option();
             switch (option) {
                 case LEARNING:
+                    load_words();
+                    
                     if (!session.has_flashcards()) {
                         clear_scr();
                         cerr << "No words available" << endl;
@@ -40,6 +40,8 @@ public:
                     }
                     break;
                 case LIST:
+                    load_words();
+
                     clear_scr();
                     display_words();
 
